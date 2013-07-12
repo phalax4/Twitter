@@ -3,6 +3,7 @@ package Access;
 //Original code at http://www.java-tutorial.ch/framework/twitter-with-java-tutorial
 import java.io.BufferedReader;
 import java.util.List;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -10,6 +11,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+//import twitter4j.auth.OAuthToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.Status;
 
@@ -17,9 +19,11 @@ import java.net.URISyntaxException;
 import java.awt.Desktop;
 import java.net.URI;
 
+import au.com.bytecode.opencsv.CSVWriter;
+
 public class Tweet {
-	
-	private boolean counter = true;
+	static String[] entries = new String[2];
+	String token; String tokenSecret;
    private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
    private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
    
@@ -57,15 +61,16 @@ while (null == accessToken) {
 
 
 System.out.println("Access Token: " + accessToken.getToken());
-System.out.println("Access Token Secret: "
- + accessToken.getTokenSecret());
-
+System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
+ token = accessToken.getToken();
+ tokenSecret = accessToken.getTokenSecret();
 }
 
 
- //twitter.updateStatus("Hello Twitter");
+
 
    }
+   
    public void homeTime() throws TwitterException{
 	   List<Status> statuses = twitter.getHomeTimeline();
 	   System.out.println("Timeline Loading...");
@@ -74,12 +79,23 @@ System.out.println("Access Token Secret: "
 	                          status.getText());
 	   }
    }
+   public void update() throws TwitterException{
+	    
+		 
+	   twitter.updateStatus("Hello Twitter");
+   }
    
   
  
- private static void storeAccessToken(int useId, AccessToken accessToken){
+ public void storeAccessToken() throws IOException{
+	 CSVWriter writer = new CSVWriter(new FileWriter("database.csv"), '\t');
+	 
+	entries[0] = token;
+	entries[1] = tokenSecret;
+	 
    //store accessToken.getToken()
    //store accessToken.getTokenSecret()
+	 writer.close();
  }
 
    public static void main(String[] args) throws Exception {
