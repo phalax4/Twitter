@@ -95,7 +95,7 @@ System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
 	 
    //store accessToken.getToken()
    //store accessToken.getTokenSecret()
-	 writer.close();
+ writer.close();
  }
 
    public static void main(String[] args) throws Exception {
