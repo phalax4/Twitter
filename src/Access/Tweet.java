@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import sun.net.www.URLConnection;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -16,6 +17,7 @@ import twitter4j.auth.RequestToken;
 import twitter4j.Status;
 
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.awt.Desktop;
 import java.net.URI;
 
@@ -26,20 +28,19 @@ public class Tweet {
 	String token; String tokenSecret;
    private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
    private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
-   
    Twitter twitter = new TwitterFactory().getInstance();
+   
    public void start() throws TwitterException, IOException,URISyntaxException {
-
-
 
 twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
 RequestToken requestToken = twitter.getOAuthRequestToken();
 System.out.println("Going to "+ requestToken.getAuthorizationURL());
 String web = requestToken.getAuthorizationURL();
 
-Desktop.getDesktop().browse(new URI(web));
+this.openBrowser(web);
 
 AccessToken accessToken = null;
+
 
 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 while (null == accessToken) {
@@ -97,7 +98,16 @@ System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
    //store accessToken.getTokenSecret()
  writer.close();
  }
-
+ public void openBrowser(String url){
+	 try {
+		  Desktop desktop = java.awt.Desktop.getDesktop();
+		  URI oURL = new URI(url);
+		  desktop.browse(oURL);
+		} catch (Exception e) {
+		  e.printStackTrace();
+		}
+ }
+ 
    public static void main(String[] args) throws Exception {
   	 new Tweet().start();
    }
