@@ -2,6 +2,7 @@ package Access;
 
 //Original code at http://www.java-tutorial.ch/framework/twitter-with-java-tutorial
 import java.io.BufferedReader;
+
 import java.util.List;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +29,8 @@ public class Tweet {
    private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
    
    Twitter twitter = new TwitterFactory().getInstance();
+   
+  
    public void start() throws TwitterException, IOException,URISyntaxException {
 
 
@@ -87,18 +90,19 @@ System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
    
   
  
- public void storeAccessToken() throws IOException{
-	 CSVWriter writer = new CSVWriter(new FileWriter("database.csv"), '\t');
-	 
-	entries[0] = token;
-	entries[1] = tokenSecret;
-	 
-   //store accessToken.getToken()
-   //store accessToken.getTokenSecret()
-	 writer.close();
- }
+// public void storeAccessToken() throws IOException{
+//	 CSVWriter writer = new CSVWriter(new FileWriter("database.csv"), '\t');
+//	 
+//	entries[0] = token;
+//	entries[1] = tokenSecret;
+//	 
+//   //store accessToken.getToken()
+//   //store accessToken.getTokenSecret()
+//	 writer.close();
+// }
 
    public static void main(String[] args) throws Exception {
   	 new Tweet().start();
+  	 
    }
 }
