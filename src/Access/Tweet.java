@@ -39,6 +39,7 @@ import com.temboo.core.TembooException;
 import com.temboo.core.TembooSession;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 public class Tweet {
 	static String[] entries = new String[2];
 	String token; String tokenSecret;
@@ -129,6 +130,10 @@ System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
   	 new Tweet().start();
    }
 =======
+=======
+
+
+>>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 public class Tweet {
 	
 	public Tweet()throws TembooException{
@@ -266,5 +271,8 @@ public class Tweet {
 		homeTimeLn(list);
 	}
 
+<<<<<<< HEAD
+>>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
+=======
 >>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 }
