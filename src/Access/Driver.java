@@ -21,14 +21,23 @@ public class Driver {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Have you already authorized this app? (y/n): ");
 		String dec = sc.nextLine();
+<<<<<<< HEAD
 		sc.close();
+=======
+>>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 		
 		if(dec.equals("n")){
 			dave.start();
 		}else{
+<<<<<<< HEAD
 			dave.getCreds();	
 		}
 		dave.homeTimeLn();
+=======
+			dave.getCreds();
+			dave.runF();
+		}
+>>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 
 	}
 	
