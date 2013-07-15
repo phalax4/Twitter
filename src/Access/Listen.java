@@ -14,14 +14,13 @@ import twitter4j.conf.ConfigurationBuilder;
 public class Listen {
 	public void listen(String CONSUMER_KEY,String CONSUMER_KEY_SECRET,String token,String tokenSecret) throws TwitterException, IOException{
 		System.out.println("sample");
-		ConfigurationBuilder cb = new ConfigurationBuilder();
+		/*ConfigurationBuilder cb = new ConfigurationBuilder();
 	    cb.setDebugEnabled(true);
 	    cb.setOAuthConsumerKey(CONSUMER_KEY);
 	    cb.setOAuthConsumerSecret(CONSUMER_KEY_SECRET);
 	    cb.setOAuthAccessToken(token);
-	    cb.setOAuthAccessTokenSecret(tokenSecret);
-	    
-	    TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
+	    cb.setOAuthAccessTokenSecret(tokenSecret);    
+	    TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();*/
 	    StatusListener listener = new StatusListener(){
 	        public void onStatus(Status status) {
 	            System.out.println(status.getUser().getName() + " : " + status.getText());
@@ -42,9 +41,9 @@ public class Listen {
 				
 			}
 	    };
-	    //TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+	    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 	    twitterStream.addListener(listener);
-	    // sample() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
+	    
 	    twitterStream.sample();
 	}
 }
