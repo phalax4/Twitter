@@ -38,107 +38,8 @@ import com.temboo.Library.Twitter.Tweets.StatusesUpdate.StatusesUpdateResultSet;
 import com.temboo.core.TembooException;
 import com.temboo.core.TembooSession;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-public class Tweet {
-	static String[] entries = new String[2];
-	String token; String tokenSecret;
-   private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
-   private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
-   Twitter twitter = new TwitterFactory().getInstance();
-   
-   public void start() throws TwitterException, IOException,URISyntaxException {
-
-twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
-RequestToken requestToken = twitter.getOAuthRequestToken();
-System.out.println("Going to "+ requestToken.getAuthorizationURL());
-String web = requestToken.getAuthorizationURL();
-
-this.openBrowser(web);
-
-AccessToken accessToken = null;
 
 
-BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-while (null == accessToken) {
-    try {
- System.out.print("Input PIN here: ");
- String pin = br.readLine();
-
- accessToken = twitter.getOAuthAccessToken(requestToken, pin);
-
-    } catch (TwitterException te) {
-=======
->>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
-
-
-<<<<<<< HEAD
- System.out.println("Pin Error");
-
-    }
-
-
-
-System.out.println("Access Token: " + accessToken.getToken());
-System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
- token = accessToken.getToken();
- tokenSecret = accessToken.getTokenSecret();
-}
-
-
-
-
-   }
-   
-   public void homeTime() throws TwitterException{
-	   List<Status> statuses = twitter.getHomeTimeline();
-	   System.out.println("Timeline Loading...");
-	   for (Status status : statuses) {
-	       System.out.println(status.getUser().getName() + ":" +
-	                          status.getText());
-	   }
-   }
-   public void update() throws TwitterException{
-	    
-		 
-	   twitter.updateStatus("Hello Twitter");
-   }
-   
-  
- 
- public void storeAccessToken() throws IOException{
-	 CSVWriter writer = new CSVWriter(new FileWriter("database.csv"), '\t');
-	 
-	entries[0] = token;
-	entries[1] = tokenSecret;
-	 
-   //store accessToken.getToken()
-   //store accessToken.getTokenSecret()
- writer.close();
- }
- public void openBrowser(String url){
-	 try {
-		  Desktop desktop = java.awt.Desktop.getDesktop();
-		  URI oURL = new URI(url);
-		  desktop.browse(oURL);
-		} catch (Exception e) {
-		  e.printStackTrace();
-		}
- }
- 
-   public static void main(String[] args) throws Exception {
-  	 new Tweet().start();
-   }
-=======
-=======
-
-
->>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
-=======
-
-
->>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 public class Tweet {
 	
 	public Tweet()throws TembooException{
@@ -231,7 +132,7 @@ public class Tweet {
 		System.out.println("Timeline");
 		System.out.println(homeTimelineResults.get_Response());
 		//String json = homeTimelineResults.get_Response();
-	new Listen().listen(CONSUMER_KEY, CONSUMER_KEY_SECRET,token,tokenSecret);
+	  new Listen().listen(CONSUMER_KEY, CONSUMER_KEY_SECRET,token,tokenSecret);
 	}
 
 	public void storeAccessToken() throws IOException{
@@ -276,11 +177,5 @@ public class Tweet {
 		homeTimeLn(list);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
-=======
->>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
-=======
->>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
+
 }
