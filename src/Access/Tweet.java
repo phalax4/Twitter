@@ -119,13 +119,13 @@ public class Tweet {
 		System.out.println("Tweet Posted");
 	}
 	
-	public void homeTimeLn() throws TembooException{
+	public void homeTimeLn(ArrayList<String> list1) throws TembooException{
 		TembooSession session = new TembooSession("phalax4", APP_KEY_NAME, APP_KEY_VALUE);
 		HomeTimeline homeTimelineChoreo = new HomeTimeline(session);
 		HomeTimelineInputSet homeTimelineInputs = homeTimelineChoreo.newInputSet();
 
-		homeTimelineInputs.set_AccessToken(token);
-		homeTimelineInputs.set_AccessTokenSecret(tokenSecret);
+		homeTimelineInputs.set_AccessToken(list1.get(1));
+		homeTimelineInputs.set_AccessTokenSecret(list1.get(2);
 		homeTimelineInputs.set_ConsumerSecret(CONSUMER_KEY_SECRET);
 		homeTimelineInputs.set_ConsumerKey(CONSUMER_KEY);
 
@@ -157,23 +157,22 @@ public class Tweet {
 	}
 	
 	public void getCreds(){
-
 		try{
-
 			FileInputStream fstream = new FileInputStream("db.txt");
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			
 			while ((line = br.readLine()) != null)   {
 				list.add(line);
-			}
-			
+			}			
 			in.close();
 		}catch (Exception e){
 			System.err.println("Error: " + e.getMessage());
 		}
-
 	}
 
+	public void runF(){
+		this.homeTimeln(list);
+	}
 
 }
