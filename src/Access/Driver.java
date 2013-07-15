@@ -23,7 +23,10 @@ public class Driver {
 		String dec = sc.nextLine();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		sc.close();
+=======
+>>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 =======
 >>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 =======
@@ -34,9 +37,15 @@ public class Driver {
 		}else{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			dave.getCreds();	
 		}
 		dave.homeTimeLn();
+=======
+			dave.getCreds();
+			dave.runF();
+		}
+>>>>>>> fd7d5901fa51615b06d5691a580405e5b9741c12
 =======
 			dave.getCreds();
 			dave.runF();
