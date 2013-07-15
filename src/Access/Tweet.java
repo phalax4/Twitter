@@ -125,7 +125,7 @@ public class Tweet {
 		HomeTimelineInputSet homeTimelineInputs = homeTimelineChoreo.newInputSet();
 
 		homeTimelineInputs.set_AccessToken(list1.get(1));
-		homeTimelineInputs.set_AccessTokenSecret(list1.get(2);
+		homeTimelineInputs.set_AccessTokenSecret(list1.get(2));
 		homeTimelineInputs.set_ConsumerSecret(CONSUMER_KEY_SECRET);
 		homeTimelineInputs.set_ConsumerKey(CONSUMER_KEY);
 
@@ -171,8 +171,8 @@ public class Tweet {
 		}
 	}
 
-	public void runF(){
-		this.homeTimeln(list);
+	public void runF() throws TembooException{
+		homeTimeLn(list);
 	}
 
 }

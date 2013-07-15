@@ -26,9 +26,9 @@ public class Driver {
 		if(dec.equals("n")){
 			dave.start();
 		}else{
-			dave.getCreds();	
+			dave.getCreds();
+			dave.runF();
 		}
-		dave.homeTimeLn();
 
 	}
 	
