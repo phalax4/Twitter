@@ -131,7 +131,7 @@ public class Tweet {
 
 		HomeTimelineResultSet homeTimelineResults = homeTimelineChoreo.execute(homeTimelineInputs);
 		System.out.println("Timeline");
-		System.out.println(homeTimelineResults);
+		System.out.println(homeTimelineResults.get_Response());
 	}
 
 	public void storeAccessToken() throws IOException{
@@ -170,6 +170,7 @@ public class Tweet {
 			System.err.println("Error: " + e.getMessage());
 		}
 	}
+	//User user = twitter.showUser(screenName);
 
 	public void runF() throws TembooException{
 		homeTimeLn(list);
