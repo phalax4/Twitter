@@ -21,7 +21,6 @@ public class Driver {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Have you already authorized this app? (y/n): ");
 		String dec = sc.nextLine();
-		sc.close();
 		
 		if(dec.equals("n")){
 			dave.start();
