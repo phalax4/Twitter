@@ -2,11 +2,16 @@ package Access;
 
 //Original code at http://www.java-tutorial.ch/framework/twitter-with-java-tutorial
 import java.io.BufferedReader;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Writer;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -20,89 +25,155 @@ import java.net.URISyntaxException;
 import java.awt.Desktop;
 import java.net.URI;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import com.temboo.Library.Twitter.Timelines.HomeTimeline;
+import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineInputSet;
+import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineResultSet;
+import com.temboo.Library.Twitter.Tweets.StatusesUpdate;
+import com.temboo.Library.Twitter.Tweets.StatusesUpdate.StatusesUpdateInputSet;
+import com.temboo.Library.Twitter.Tweets.StatusesUpdate.StatusesUpdateResultSet;
+import com.temboo.core.TembooException;
+import com.temboo.core.TembooSession;
+
+
 
 public class Tweet {
-	static String[] entries = new String[2];
-	String token; String tokenSecret;
-   private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
-   private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
-   
-   Twitter twitter = new TwitterFactory().getInstance();
-   
-  
-   public void start() throws TwitterException, IOException,URISyntaxException {
+	
+	public Tweet()throws TembooException{
+	}
+	
+	String token; String tokenSecret;long name;
+    String line; 
+	private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
+	private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
+	private final static String APP_KEY_NAME = "myFirstApp";
+	private final static String APP_KEY_VALUE = "231248aa-6da1-4f21-8";
+	File file;Writer output = null;
+	Twitter twitter = new TwitterFactory().getInstance();
+	ArrayList<String> list = new ArrayList<String>();
+
+	public void start() throws TwitterException, IOException,URISyntaxException {
+		file = new File("db.txt");
+		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
+		RequestToken requestToken = twitter.getOAuthRequestToken();
+		System.out.println("Going to "+ requestToken.getAuthorizationURL());
+		String web = requestToken.getAuthorizationURL();
+
+		this.openBrowser(web);
+		//Desktop.getDesktop().browse(new URI(web));
+
+		AccessToken accessToken = null;
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		while (null == accessToken) {
+			try {
+				System.out.print("Input PIN here: ");
+				String pin = br.readLine();
+
+				accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+
+			} catch (TwitterException te) {
+
+				System.out.println("Failed to get access token, caused by: "
+						+ te.getMessage()); 
+
+				System.out.println("Pin Error");
+			}
+
+		}
+		System.out.println(accessToken.getToken());
+		System.out.println(accessToken.getTokenSecret());
+		System.out.println("Id is: "+ twitter.getId());
+		token = accessToken.getToken();
+		tokenSecret = accessToken.getTokenSecret();
+		name = twitter.getId();
+		this.storeAccessToken();
+	}
 
 
+	public void homeTime() throws TwitterException{
+		List<Status> statuses = twitter.getHomeTimeline();
+		System.out.println("Timeline Loading...");
+		for (Status status : statuses) {
+			System.out.println(status.getUser().getName() + ":" +
+					status.getText());
+		}
+	}
 
-twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
-RequestToken requestToken = twitter.getOAuthRequestToken();
-System.out.println("Going to "+ requestToken.getAuthorizationURL());
-String web = requestToken.getAuthorizationURL();
+	public void update() throws TwitterException{    
+		twitter.updateStatus("Hello Twitter");
+	}
 
-Desktop.getDesktop().browse(new URI(web));
+	public void post() throws TembooException{
 
-AccessToken accessToken = null;
+		TembooSession session = new TembooSession("phalax4", APP_KEY_NAME, APP_KEY_VALUE);
+		StatusesUpdate statusesUpdateChoreo = new StatusesUpdate(session);
+		StatusesUpdateInputSet statusesUpdateInputs = statusesUpdateChoreo.newInputSet();
 
-BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-while (null == accessToken) {
-    try {
- System.out.print("Input PIN here: ");
- String pin = br.readLine();
+		statusesUpdateInputs.set_AccessToken(token);
+		statusesUpdateInputs.set_AccessTokenSecret(tokenSecret);
+		statusesUpdateInputs.set_ConsumerSecret(CONSUMER_KEY_SECRET);
+		statusesUpdateInputs.set_StatusUpdate("Temboo2");
+		statusesUpdateInputs.set_ConsumerKey(CONSUMER_KEY);
 
- accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+		StatusesUpdateResultSet statusesUpdateResults = statusesUpdateChoreo.execute(statusesUpdateInputs);
+		System.out.println("Tweet Posted");
+	}
+	
+	public void homeTimeLn() throws TembooException{
+		TembooSession session = new TembooSession("phalax4", APP_KEY_NAME, APP_KEY_VALUE);
+		HomeTimeline homeTimelineChoreo = new HomeTimeline(session);
+		HomeTimelineInputSet homeTimelineInputs = homeTimelineChoreo.newInputSet();
 
-    } catch (TwitterException te) {
+		homeTimelineInputs.set_AccessToken(token);
+		homeTimelineInputs.set_AccessTokenSecret(tokenSecret);
+		homeTimelineInputs.set_ConsumerSecret(CONSUMER_KEY_SECRET);
+		homeTimelineInputs.set_ConsumerKey(CONSUMER_KEY);
 
- System.out.println("Failed to get access token, caused by: "
-  + te.getMessage());
+		HomeTimelineResultSet homeTimelineResults = homeTimelineChoreo.execute(homeTimelineInputs);
+		System.out.println("Timeline");
+		System.out.println(homeTimelineResults);
+	}
 
- System.out.println("Pin Error");
+	public void storeAccessToken() throws IOException{
 
-    }
+		output = new BufferedWriter(new FileWriter(file));
+		output.write(name+"\r\n");
+		
+		output.write(token+"\r\n");
+		
+		output.write(tokenSecret);
+
+		output.close();
+		System.out.println("Tokens Saved");
+	}
+	public void openBrowser(String myUrl){
+		try {
+			Desktop desktop = java.awt.Desktop.getDesktop();
+			URI oURL = new URI(myUrl);
+			desktop.browse(oURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void getCreds(){
+
+		try{
+
+			FileInputStream fstream = new FileInputStream("db.txt");
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			
+			while ((line = br.readLine()) != null)   {
+				list.add(line);
+			}
+			
+			in.close();
+		}catch (Exception e){
+			System.err.println("Error: " + e.getMessage());
+		}
+
+	}
 
 
-
-System.out.println("Access Token: " + accessToken.getToken());
-System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
- token = accessToken.getToken();
- tokenSecret = accessToken.getTokenSecret();
-}
-
-
-
-
-   }
-   
-   public void homeTime() throws TwitterException{
-	   List<Status> statuses = twitter.getHomeTimeline();
-	   System.out.println("Timeline Loading...");
-	   for (Status status : statuses) {
-	       System.out.println(status.getUser().getName() + ":" +
-	                          status.getText());
-	   }
-   }
-   public void update() throws TwitterException{
-	    
-		 
-	   twitter.updateStatus("Hello Twitter");
-   }
-   
-  
- 
-// public void storeAccessToken() throws IOException{
-//	 CSVWriter writer = new CSVWriter(new FileWriter("database.csv"), '\t');
-//	 
-//	entries[0] = token;
-//	entries[1] = tokenSecret;
-//	 
-//   //store accessToken.getToken()
-//   //store accessToken.getTokenSecret()
-//	 writer.close();
-// }
-
-   public static void main(String[] args) throws Exception {
-  	 new Tweet().start();
-  	 
-   }
 }
