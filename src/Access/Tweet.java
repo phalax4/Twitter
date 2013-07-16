@@ -9,8 +9,10 @@ import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 
@@ -36,13 +38,14 @@ import com.temboo.Library.Twitter.Tweets.StatusesUpdate.StatusesUpdateResultSet;
 import com.temboo.core.TembooException;
 import com.temboo.core.TembooSession;
 
+import java.util.Properties;
 
 
 public class Tweet {
 	
 	public Tweet()throws TembooException{
 	}
-	
+	Properties prop;
 	String token; String tokenSecret;long name;
     String line; 
     private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
@@ -54,6 +57,8 @@ public class Tweet {
 	ArrayList<String> list = new ArrayList<String>();
 	
 	public void start() throws TwitterException, IOException,URISyntaxException {
+		 prop = new Properties();
+		 
 		file = new File("db.txt");
 		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
 		RequestToken requestToken = twitter.getOAuthRequestToken();
@@ -65,7 +70,7 @@ public class Tweet {
 
 		AccessToken accessToken = null;
 		Scanner reader = new Scanner(System.in);
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (null == accessToken) {
 			try {
 
@@ -130,17 +135,28 @@ public class Tweet {
 		System.out.println("Timeline");
 		System.out.println(homeTimelineResults.get_Response());
 		//String json = homeTimelineResults.get_Response();
-	new Listen().listen(CONSUMER_KEY, CONSUMER_KEY_SECRET,token,tokenSecret);
+	//new Listen().listen(CONSUMER_KEY, CONSUMER_KEY_SECRET,token,tokenSecret);
 	}
 
 	public void storeAccessToken() throws IOException{
-
+		
+		/*try {
+    	
+    		prop.setProperty("debug", "true");
+    		prop.setProperty("oauth.consumerKey", CONSUMER_KEY);
+    		prop.setProperty("oauth.consumerSecret", CONSUMER_KEY_SECRET);
+    		prop.setProperty("oauth.accessToken", token);
+    		prop.setProperty("oauth.accessTokenSecret", "tokenSecret");
+    	
+    		prop.store(new FileOutputStream("twitter4j.properties"), null);
+ 
+    	} catch (IOException ex) {
+    		ex.printStackTrace();
+        }*/
 		output = new BufferedWriter(new FileWriter(file));
 		output.write(name+"\r\n");
-		
 		output.write(token+"\r\n");
-		
-		output.write(tokenSecret);
+		output.write(tokenSecret+"\r\n");
 
 		output.close();
 		System.out.println("Tokens Saved");
@@ -156,6 +172,22 @@ public class Tweet {
 	}
 	
 	public void getCreds(){
+	/*	try {
+           
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("twitter4j.properties");
+ 		prop.load(new FileInputStream("twitter4j.properties"));
+
+           
+        list.add(prop.getProperty("oauth.accessToken"));
+ 		list.add(prop.getProperty("oauth.accessTokenSecret"));
+ 		//System.out.println(prop.getProperty("dbpassword"));
+
+ 	} catch (IOException ex) {
+ 		ex.printStackTrace();
+     }*/
+
+		
+		
 		try{
 			FileInputStream fstream = new FileInputStream("db.txt");
 			DataInputStream in = new DataInputStream(fstream);
