@@ -45,6 +45,6 @@ public class Listen {
 	    //TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 	    twitterStream.addListener(listener);
 	    // sample() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
-	    twitterStream.sample();
+	    twitterStream.user();;
 	}
 }
