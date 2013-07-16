@@ -13,14 +13,22 @@ import twitter4j.Status;
 
 
 public class Driver {
+<<<<<<< HEAD
 
 
 	public static void main(String args[]) throws Exception {
 
+=======
+	
+	
+	public static void main(String args[]) throws Exception {
+		
+>>>>>>> e90d25afe17a66d5439e2fe0d745f5463cd21a71
 		Tweet dave = new Tweet();
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Have you already authorized this app? (y/n): ");
 		String dec = sc.nextLine();
+<<<<<<< HEAD
 
 
 		if(dec.equals("n")){
@@ -36,4 +44,17 @@ public class Driver {
    }
 
 
+=======
+		
+		if(dec.equals("n")){
+			dave.start();
+		}else{
+			dave.getCreds();
+			dave.runF();
+		}
+
+	}
+	
+	
+>>>>>>> e90d25afe17a66d5439e2fe0d745f5463cd21a71
 }
