@@ -1,7 +1,6 @@
 package Access;
 //Original code at http://www.java-tutorial.ch/framework/twitter-with-java-tutorial
 import java.io.BufferedReader;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedWriter;
@@ -28,7 +27,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import com.temboo.Library.Twitter.Timelines.HomeTimeline;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineInputSet;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineResultSet;
@@ -40,6 +38,7 @@ import com.temboo.core.TembooSession;
 
 import java.util.Properties;
 
+import org.json.JSONArray;
 import org.json.JSONML;
 import org.json.JSONObject;
 
@@ -52,7 +51,8 @@ public class Tweet {
 	Properties prop;
 
 	String token; String tokenSecret;long name;
-    String line; 
+    String line; Gson gson = new Gson();String au;
+    int var1,var2,var3,var4;
     private final static String CONSUMER_KEY = "hyL303lpgZpSt6cMmilBw";
 	private final static String CONSUMER_KEY_SECRET = "EqgkdjEPuhP4KyVm3PEV926YuDrPcZAG249FxwXE9Q";
 	private final static String APP_KEY_NAME = "myFirstApp";
@@ -60,6 +60,8 @@ public class Tweet {
 	File file;Writer output = null;
 	Twitter twitter = new TwitterFactory().getInstance();
 	ArrayList<String> list = new ArrayList<String>();
+	ArrayList<String> stringList = new ArrayList<String>();
+	String getter;
 	
 	public void check() throws TwitterException, IOException, URISyntaxException, TembooException{
 		if(getCreds()==null){
@@ -171,7 +173,17 @@ public class Tweet {
     		
     		String text = status.get("text").getAsString();
     		String screen_name = status.get("user").getAsJsonObject().get("name").getAsString();
-    		System.out.println(screen_name + " said " + text);
+    		
+    		JsonArray urls = status.get("entities").getAsJsonObject().get("urls").getAsJsonArray();
+    		
+    		au = urls.toString();
+    		var1 = au.indexOf(":")+1;
+    		var2 = au.indexOf(":",var1)+1;
+    		var3 = au.indexOf(":",var2)+2;
+    		var4 = au.indexOf(",",var3)-1;
+    	
+    		
+    		System.out.println(screen_name + " said " + text+" with "+au.substring(var3,var4));
     	}
 		//new Reader().parse(result);
 
@@ -180,7 +192,7 @@ public class Tweet {
 	}
 
 	public void storeAccessToken() throws IOException{
-		
+		//store as json file//expiring token?
 		/*try {
     	
     		prop.setProperty("debug", "true");
@@ -242,7 +254,7 @@ public class Tweet {
 				list.add(line);
 			}			
 			in.close();
-			return "DONE";
+			return "SUCCESS";
 		}catch (Exception e){
 			System.err.println("Error: " + e.getMessage());
 			return null;
