@@ -1,6 +1,7 @@
 package Access;
 //Original code at http://www.java-tutorial.ch/framework/twitter-with-java-tutorial
 import java.io.BufferedReader;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedWriter;
@@ -27,6 +28,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import com.temboo.Library.Twitter.Timelines.HomeTimeline;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineInputSet;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineResultSet;
@@ -39,6 +41,7 @@ import com.temboo.core.TembooSession;
 import java.util.Properties;
 
 import org.json.JSONML;
+import org.json.JSONObject;
 
 
 
@@ -147,26 +150,27 @@ public class Tweet {
 		homeTimelineInputs.set_ConsumerKey(CONSUMER_KEY);
 
 		HomeTimelineResultSet homeTimelineResults = homeTimelineChoreo.execute(homeTimelineInputs);
-		//System.out.println("Timeline");
 		
 		System.out.println(homeTimelineResults.get_Response());
-		String result = homeTimelineResults.get_Response();
+
 		
 		 /*JsonElement jelement = new JsonParser().parse(homeTimelineResults.get_Response());
 		    JsonObject  rootobj = jelement.getAsJsonObject();*/
 		   
-		    
+		 
 		JsonParser jp = new JsonParser();
-    	JsonElement root = jp.parse(result);
-    	JsonObject rootobj = root.getAsJsonObject();
+    	JsonElement root = jp.parse(homeTimelineResults.get_Response());
     	
-    	JsonArray statuses = rootobj.get("statuses").getAsJsonArray();
+    	JsonArray statuses = root.getAsJsonArray();
+    	
+		
+    	//JsonArray statuses = rootobj.get("statuses").getAsJsonArray();
+    	
     	for(int i = 0; i < statuses.size(); i++) {
     		JsonObject status = statuses.get(i).getAsJsonObject();
     		
     		String text = status.get("text").getAsString();
-    		String screen_name = status.get("user").getAsJsonObject().get("screen_name").getAsString();
-    		
+    		String screen_name = status.get("user").getAsJsonObject().get("name").getAsString();
     		System.out.println(screen_name + " said " + text);
     	}
 		//new Reader().parse(result);
