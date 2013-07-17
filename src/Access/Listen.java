@@ -14,17 +14,7 @@ import twitter4j.conf.ConfigurationBuilder;
 public class Listen {
 	public void listen(String CONSUMER_KEY,String CONSUMER_KEY_SECRET,String token,String tokenSecret) throws TwitterException, IOException{
 		System.out.println("sample");
-<<<<<<< HEAD
-		/*ConfigurationBuilder cb = new ConfigurationBuilder();
-	    cb.setDebugEnabled(true);
-	    cb.setOAuthConsumerKey(CONSUMER_KEY);
-	    cb.setOAuthConsumerSecret(CONSUMER_KEY_SECRET);
-	    cb.setOAuthAccessToken(token);
-	    cb.setOAuthAccessTokenSecret(tokenSecret);    
-	    TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();*/
-=======
-		
->>>>>>> e90d25afe17a66d5439e2fe0d745f5463cd21a71
+
 	    StatusListener listener = new StatusListener(){
 	        public void onStatus(Status status) {
 	            System.out.println(status.getUser().getName() + " : " + status.getText());
@@ -47,12 +37,7 @@ public class Listen {
 	    };
 	    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 	    twitterStream.addListener(listener);
-<<<<<<< HEAD
-	    
-	    twitterStream.sample();
-=======
-	   
+
 	    twitterStream.sample();;
->>>>>>> e90d25afe17a66d5439e2fe0d745f5463cd21a71
 	}
 }

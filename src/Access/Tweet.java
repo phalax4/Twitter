@@ -1,39 +1,32 @@
 package Access;
-
 //Original code at http://www.java-tutorial.ch/framework/twitter-with-java-tutorial
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-<<<<<<< HEAD
-=======
-import java.io.FileOutputStream;
->>>>>>> e90d25afe17a66d5439e2fe0d745f5463cd21a71
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 
-import sun.net.www.URLConnection;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
-//import twitter4j.auth.OAuthToken;
 import twitter4j.auth.RequestToken;
-import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.Status;
 
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.awt.Desktop;
 import java.net.URI;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineInputSet;
 import com.temboo.Library.Twitter.Timelines.HomeTimeline.HomeTimelineResultSet;
@@ -44,6 +37,8 @@ import com.temboo.core.TembooException;
 import com.temboo.core.TembooSession;
 
 import java.util.Properties;
+
+import org.json.JSONML;
 
 
 
@@ -63,6 +58,14 @@ public class Tweet {
 	Twitter twitter = new TwitterFactory().getInstance();
 	ArrayList<String> list = new ArrayList<String>();
 	
+	public void check() throws TwitterException, IOException, URISyntaxException, TembooException{
+		if(getCreds()==null){
+			start();
+		}else{
+			homeTimeLn(list);
+		}
+		
+	}
 	public void start() throws TwitterException, IOException,URISyntaxException {
 
 		 prop = new Properties();
@@ -138,16 +141,35 @@ public class Tweet {
 		HomeTimeline homeTimelineChoreo = new HomeTimeline(session);
 		HomeTimelineInputSet homeTimelineInputs = homeTimelineChoreo.newInputSet();
 
-		homeTimelineInputs.set_AccessToken(list1.get(1));
-		homeTimelineInputs.set_AccessTokenSecret(list1.get(2));
+		homeTimelineInputs.set_AccessToken(list1.get(2));
+		homeTimelineInputs.set_AccessTokenSecret(list1.get(3));
 		homeTimelineInputs.set_ConsumerSecret(CONSUMER_KEY_SECRET);
 		homeTimelineInputs.set_ConsumerKey(CONSUMER_KEY);
 
 		HomeTimelineResultSet homeTimelineResults = homeTimelineChoreo.execute(homeTimelineInputs);
-		System.out.println("Timeline");
+		//System.out.println("Timeline");
+		
 		System.out.println(homeTimelineResults.get_Response());
-		//String json = homeTimelineResults.get_Response();
-
+		String result = homeTimelineResults.get_Response();
+		
+		 /*JsonElement jelement = new JsonParser().parse(homeTimelineResults.get_Response());
+		    JsonObject  rootobj = jelement.getAsJsonObject();*/
+		   
+		    
+		JsonParser jp = new JsonParser();
+    	JsonElement root = jp.parse(result);
+    	JsonObject rootobj = root.getAsJsonObject();
+    	
+    	JsonArray statuses = rootobj.get("statuses").getAsJsonArray();
+    	for(int i = 0; i < statuses.size(); i++) {
+    		JsonObject status = statuses.get(i).getAsJsonObject();
+    		
+    		String text = status.get("text").getAsString();
+    		String screen_name = status.get("user").getAsJsonObject().get("screen_name").getAsString();
+    		
+    		System.out.println(screen_name + " said " + text);
+    	}
+		//new Reader().parse(result);
 
 
 	//new Listen().listen(CONSUMER_KEY, CONSUMER_KEY_SECRET,token,tokenSecret);
@@ -169,6 +191,7 @@ public class Tweet {
     		ex.printStackTrace();
         }*/
 		output = new BufferedWriter(new FileWriter(file));
+		output.write("true"+"\r\n");
 		output.write(name+"\r\n");
 		output.write(token+"\r\n");
 		output.write(tokenSecret+"\r\n");
@@ -187,7 +210,7 @@ public class Tweet {
 		}
 	}
 	
-	public void getCreds(){
+	public String getCreds(){
 
 	/*	try {
            
@@ -215,17 +238,12 @@ public class Tweet {
 				list.add(line);
 			}			
 			in.close();
+			return "DONE";
 		}catch (Exception e){
 			System.err.println("Error: " + e.getMessage());
+			return null;
 		}
 	}
 	//User user = twitter.showUser(screenName);
 
-	public void runF() throws TembooException, IOException, TwitterException{
-		homeTimeLn(list);
-	}
-
-<<<<<<< HEAD
-=======
->>>>>>> e90d25afe17a66d5439e2fe0d745f5463cd21a71
 }
