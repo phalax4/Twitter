@@ -140,7 +140,7 @@ public class Tweet {
 		System.out.println("Tweet Posted");
 	}
 	
-	public void homeTimeLn(ArrayList<String> list1) throws TembooException, IOException, TwitterException{
+	public String homeTimeLn(ArrayList<String> list1) throws TembooException, IOException, TwitterException{
 		TembooSession session = new TembooSession("phalax4", APP_KEY_NAME, APP_KEY_VALUE);
 		
 		HomeTimeline homeTimelineChoreo = new HomeTimeline(session);
@@ -183,11 +183,11 @@ public class Tweet {
     		var4 = au.indexOf(",",var3)-1;
     	
     		
-    		System.out.println(screen_name + " said " + text+" with "+au.substring(var3,var4));
+    		return (screen_name + " said " + text+" with "+au.substring(var3,var4));
     	}
 		//new Reader().parse(result);
 
-
+    	return null;
 	//new Listen().listen(CONSUMER_KEY, CONSUMER_KEY_SECRET,token,tokenSecret);
 	}
 
